@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIA Integral – Sistemas | Ingeniería | Administración | Redes | Automatización</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1a2e4a;--dark-blue:#1e4d7b;--mid-blue:#2e7db5;
+    --teal:#3ab5b0;--green:#4a9e5c;--gold:#e8b84b;--orange:#e07c2a;
+    --white:#fff;--light-bg:#f4f7fb;--text-mid:#4a5e78;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Barlow',sans-serif;color:var(--navy);background:var(--white);overflow-x:hidden;}
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-track{background:var(--navy);}
+  ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+
+  /* ─── NAV ─── */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    height:70px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 5vw;
+    background:rgba(26,46,74,.97);backdrop-filter:blur(12px);
+    box-shadow:0 2px 24px rgba(0,0,0,.3);
+  }
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .nlsvg{height:42px;width:auto;}
+  .nltxt{font-family:'Exo 2',sans-serif;font-weight:900;font-size:1.1rem;color:#fff;letter-spacing:2px;line-height:1.1;}
+  .nltxt em{color:var(--gold);font-style:normal;}
+  .nltxt small{display:block;font-size:.56rem;font-weight:300;color:rgba(255,255,255,.45);letter-spacing:1.5px;margin-top:2px;}
+  .nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center;}
+  .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:.87rem;font-weight:500;letter-spacing:.4px;position:relative;padding-bottom:4px;transition:color .2s;}
+  .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}
+  .nav-links a:hover{color:var(--gold);}
+  .nav-links a:hover::after{width:100%;}
+  .ncta{background:linear-gradient(90deg,var(--gold),var(--orange));color:var(--navy)!important;padding:8px 22px;border-radius:30px;font-weight:700!important;box-shadow:0 4px 14px rgba(232,184,75,.35);transition:transform .2s,box-shadow .2s!important;}
+  .ncta:hover{transform:scale(1.05);box-shadow:0 6px 22px rgba(232,184,75,.5)!important;}
+  .ncta::after{display:none!important;}
+  .hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+  .hbg span{display:block;width:26px;height:2px;background:#fff;border-radius:2px;transition:all .3s;}
+  .hbg.on span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+  .hbg.on span:nth-child(2){opacity:0;}
+  .hbg.on span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+  .mmenu{display:none;position:fixed;top:70px;left:0;right:0;background:rgba(26,46,74,.99);padding:1.5rem 5vw;flex-direction:column;gap:.9rem;z-index:199;border-top:2px solid var(--gold);}
+  .mmenu.on{display:flex;}
+  .mmenu a{color:rgba(255,255,255,.9);text-decoration:none;font-size:.97rem;font-weight:500;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.08);}
+  .mmenu a:last-child{border:none;}
+  .mm-cta{text-align:center;border-radius:25px;padding:11px 20px;background:linear-gradient(90deg,var(--gold),var(--orange));color:var(--navy)!important;font-weight:700!important;margin-top:.3rem;}
+
+  /* ─── HERO ─── */
+  #hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;background:linear-gradient(140deg,#0d1e33 0%,var(--navy) 45%,#0a2a50 100%);}
+  .hbg-canvas{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+  .hbg-canvas svg{width:100%;height:100%;opacity:.15;}
+  .hswoosh{position:absolute;inset:0;pointer-events:none;}
+  .hswoosh svg{width:100%;height:100%;}
+  .hcontent{position:relative;z-index:2;padding:128px 5vw 96px;max-width:700px;}
+  .hlogo-row{display:flex;align-items:center;gap:16px;margin-bottom:1.8rem;animation:fd .7s ease both;}
+  .hlogo-svg{width:120px;height:auto;filter:drop-shadow(0 4px 22px rgba(232,184,75,.35));}
+  .hlogo-info .brand{font-family:'Exo 2',sans-serif;font-weight:900;font-size:1.9rem;color:#fff;letter-spacing:3px;line-height:1;}
+  .hlogo-info .brand em{color:var(--gold);font-style:normal;}
+  .hlogo-info .tag{font-size:.68rem;color:rgba(255,255,255,.5);letter-spacing:1.8px;margin-top:5px;font-weight:300;}
+  .htitle{font-family:'Exo 2',sans-serif;font-weight:900;font-size:clamp(2.4rem,5.5vw,4.5rem);line-height:1.05;color:#fff;margin-bottom:1.1rem;animation:fd .7s .15s ease both;}
+  .htitle .g{background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .hsub{font-size:1.03rem;color:rgba(255,255,255,.65);line-height:1.75;max-width:520px;margin-bottom:2.4rem;animation:fd .7s .3s ease both;}
+  .hpills{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.4rem;animation:fd .7s .45s ease both;}
+  .hp{border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.07);color:rgba(255,255,255,.85);font-size:.75rem;padding:5px 13px;border-radius:20px;letter-spacing:.4px;transition:all .2s;}
+  .hp:hover{background:rgba(58,181,176,.15);border-color:var(--teal);color:var(--teal);}
+  .hbtns{display:flex;gap:1rem;flex-wrap:wrap;animation:fd .7s .6s ease both;}
+  .bp{background:linear-gradient(90deg,var(--gold),var(--orange));color:var(--navy);font-family:'Exo 2',sans-serif;font-weight:700;font-size:.94rem;padding:14px 34px;border-radius:50px;text-decoration:none;box-shadow:0 6px 26px rgba(232,184,75,.35);transition:transform .2s,box-shadow .2s;display:inline-block;}
+  .bp:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(232,184,75,.5);}
+  .bs{border:2px solid rgba(255,255,255,.35);color:#fff;font-family:'Exo 2',sans-serif;font-weight:600;font-size:.94rem;padding:12px 28px;border-radius:50px;text-decoration:none;transition:all .2s;display:inline-block;}
+  .bs:hover{border-color:var(--teal);color:var(--teal);background:rgba(58,181,176,.08);}
+  .hstats{position:absolute;bottom:0;left:0;right:0;z-index:2;display:flex;justify-content:center;background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.08);animation:fu .8s .8s ease both;}
+  .st{flex:1;max-width:200px;text-align:center;padding:1.3rem 1rem;border-right:1px solid rgba(255,255,255,.08);}
+  .st:last-child{border:none;}
+  .stn{font-family:'Exo 2',sans-serif;font-size:2rem;font-weight:900;color:var(--gold);line-height:1;}
+  .stl{font-size:.7rem;color:rgba(255,255,255,.5);margin-top:5px;letter-spacing:.4px;}
+  @keyframes fd{from{opacity:0;transform:translateY(-22px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes fu{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ─── SECTIONS ─── */
+  section{padding:92px 5vw;}
+  .stag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--mid-blue);margin-bottom:.7rem;}
+  .stitle{font-family:'Exo 2',sans-serif;font-size:clamp(1.9rem,3.8vw,2.9rem);font-weight:800;line-height:1.1;color:var(--navy);margin-bottom:1rem;}
+  .stitle span{background:linear-gradient(90deg,var(--mid-blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .sdesc{font-size:.97rem;color:var(--text-mid);max-width:600px;line-height:1.75;margin-bottom:3rem;}
+
+  /* ─── SERVICES ─── */
+  #servicios{background:var(--light-bg);}
+  .svc-head{text-align:center;}
+  .svc-head .sdesc{margin:0 auto 3rem;}
+  .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(288px,1fr));gap:1.4rem;max-width:1200px;margin:0 auto;}
+  .sc{background:var(--white);border-radius:22px;padding:2.2rem 1.8rem;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(26,46,74,.07);transition:transform .3s,box-shadow .3s;}
+  .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--cg);}
+  .sc:hover{transform:translateY(-7px);box-shadow:0 18px 45px rgba(26,46,74,.13);}
+  .sc[data-c="blue"]  {--cg:linear-gradient(90deg,var(--dark-blue),var(--teal));--ib:rgba(30,77,123,.1);}
+  .sc[data-c="green"] {--cg:linear-gradient(90deg,var(--green),var(--teal));--ib:rgba(74,158,92,.1);}
+  .sc[data-c="gold"]  {--cg:linear-gradient(90deg,var(--gold),var(--orange));--ib:rgba(232,184,75,.12);}
+  .sc[data-c="navy"]  {--cg:linear-gradient(90deg,var(--navy),var(--mid-blue));--ib:rgba(26,46,74,.1);}
+  .sc[data-c="teal"]  {--cg:linear-gradient(90deg,var(--teal),var(--green));--ib:rgba(58,181,176,.12);}
+  .sc[data-c="orange"]{--cg:linear-gradient(90deg,var(--orange),var(--gold));--ib:rgba(224,124,42,.12);}
+  .si{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin-bottom:1.3rem;background:var(--ib);}
+  .st2{font-family:'Exo 2',sans-serif;font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:.6rem;}
+  .sd{font-size:.86rem;color:var(--text-mid);line-height:1.65;margin-bottom:1.2rem;}
+  .sl{list-style:none;display:flex;flex-direction:column;gap:.36rem;}
+  .sl li{font-size:.79rem;color:var(--text-mid);display:flex;align-items:center;gap:8px;}
+  .sl li::before{content:'✓';width:17px;height:17px;border-radius:50%;background:var(--cg);color:#fff;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  /* ─── WHY ─── */
+  #nosotros{background:linear-gradient(140deg,var(--navy) 0%,#0a2a50 100%);position:relative;overflow:hidden;}
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1200px;margin:0 auto;}
+  .why-txt .stag{color:var(--gold);}
+  .why-txt .stitle{color:#fff;}
+  .why-txt .stitle span{background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .why-txt .sdesc{color:rgba(255,255,255,.65);margin-bottom:2rem;}
+  .wi-wrap{display:flex;flex-direction:column;gap:1rem;}
+  .wi{display:flex;gap:.9rem;align-items:flex-start;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:1.1rem 1.3rem;transition:background .2s;}
+  .wi:hover{background:rgba(255,255,255,.1);}
+  .wi-i{font-size:1.45rem;flex-shrink:0;line-height:1;}
+  .wi-t{font-family:'Exo 2',sans-serif;font-weight:700;color:#fff;font-size:.9rem;margin-bottom:.2rem;}
+  .wi-d{font-size:.79rem;color:rgba(255,255,255,.58);line-height:1.5;}
+  /* orb */
+  .why-vis{display:flex;align-items:center;justify-content:center;}
+  .orb{position:relative;width:310px;height:310px;display:flex;align-items:center;justify-content:center;}
+  .or1{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(58,181,176,.25);animation:spin 18s linear infinite;}
+  .or2{position:absolute;inset:28px;border-radius:50%;border:1.5px dashed rgba(232,184,75,.2);animation:spin 12s linear infinite reverse;}
+  @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+  .od1{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);top:0;left:50%;transform:translate(-50%,-50%);}
+  .od2{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);bottom:0;left:50%;transform:translate(-50%,50%);}
+  .oc{width:215px;height:215px;border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(58,181,176,.15),inset 0 0 30px rgba(46,125,181,.1);}
+  .ol{width:155px;filter:drop-shadow(0 0 20px rgba(232,184,75,.4));}
+
+  /* ─── CONTACT ─── */
+  #contacto{background:var(--light-bg);}
+  .cwrap{display:grid;grid-template-columns:1fr 1.25fr;gap:4rem;max-width:1100px;margin:0 auto;align-items:start;}
+  .ci-list{display:flex;flex-direction:column;gap:1rem;margin-top:2rem;}
+  .ci{display:flex;gap:.9rem;align-items:center;background:var(--white);border-radius:14px;padding:.95rem 1.3rem;box-shadow:0 2px 12px rgba(26,46,74,.06);}
+  .ci-ico{width:44px;height:44px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,var(--dark-blue),var(--teal));display:flex;align-items:center;justify-content:center;font-size:1.05rem;}
+  .ci-lbl{font-size:.7rem;color:var(--text-mid);margin-bottom:2px;}
+  .ci-val{font-weight:600;color:var(--navy);font-size:.87rem;}
+  .ci-val a{color:var(--navy);text-decoration:none;}
+  .ci-val a:hover{color:var(--mid-blue);}
+  /* form */
+  .cform{background:var(--white);border-radius:24px;padding:2.4rem;box-shadow:0 8px 45px rgba(26,46,74,.09);}
+  .ft{font-family:'Exo 2',sans-serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin-bottom:1.3rem;}
+  .fg{margin-bottom:1.05rem;}
+  .fg label{display:block;font-size:.76rem;font-weight:600;color:var(--text-mid);margin-bottom:5px;letter-spacing:.3px;}
+  .fg input,.fg select,.fg textarea{width:100%;padding:11px 15px;border:1.5px solid #dce4ef;border-radius:10px;font-family:'Barlow',sans-serif;font-size:.87rem;color:var(--navy);outline:none;transition:border-color .2s,box-shadow .2s;background:var(--light-bg);}
+  .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--mid-blue);box-shadow:0 0 0 3px rgba(46,125,181,.12);background:#fff;}
+  .fg textarea{resize:vertical;min-height:106px;}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .fsub{width:100%;padding:14px;margin-top:.4rem;background:linear-gradient(90deg,var(--dark-blue),var(--teal));color:#fff;font-family:'Exo 2',sans-serif;font-weight:700;font-size:.97rem;border:none;border-radius:50px;cursor:pointer;transition:transform .2s,box-shadow .2s;letter-spacing:.5px;}
+  .fsub:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(46,125,181,.38);}
+  .fnote{font-size:.74rem;color:var(--text-mid);text-align:center;margin-top:.8rem;line-height:1.5;}
+  .fnote a{color:var(--mid-blue);}
+
+  /* toast */
+  .toast{display:none;position:fixed;bottom:28px;right:28px;background:var(--navy);color:#fff;padding:15px 22px;border-radius:14px;font-size:.87rem;box-shadow:0 8px 30px rgba(0,0,0,.22);z-index:999;border-left:4px solid var(--teal);animation:si .3s ease;}
+  @keyframes si{from{opacity:0;transform:translateX(40px);}to{opacity:1;transform:translateX(0);}}
+
+  /* ─── FOOTER ─── */
+  footer{background:var(--navy);padding:3.5rem 5vw 2rem;}
+  .fi{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;padding-bottom:2rem;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:1.5rem;}
+  .fbrow{display:flex;align-items:center;gap:12px;margin-bottom:.9rem;}
+  .fbsvg{width:52px;height:auto;filter:drop-shadow(0 2px 8px rgba(232,184,75,.25));}
+  .fbn{font-family:'Exo 2',sans-serif;font-weight:900;font-size:1.25rem;color:#fff;letter-spacing:2px;line-height:1.1;}
+  .fbn em{color:var(--gold);font-style:normal;}
+  .fbn small{display:block;font-size:.55rem;font-weight:300;color:rgba(255,255,255,.4);letter-spacing:1.4px;margin-top:3px;}
+  .fdesc{font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.65;max-width:270px;margin-bottom:1.1rem;}
+  .fsoc{display:flex;gap:.65rem;}
+  .fsoc a{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);text-decoration:none;font-size:.85rem;font-weight:700;transition:background .2s,color .2s;}
+  .fsoc a:hover{background:var(--teal);color:#fff;}
+  .fch{font-family:'Exo 2',sans-serif;font-weight:700;color:#fff;font-size:.9rem;margin-bottom:.85rem;letter-spacing:.5px;}
+  .fl{list-style:none;display:flex;flex-direction:column;gap:.45rem;}
+  .fl a{color:rgba(255,255,255,.55);text-decoration:none;font-size:.81rem;transition:color .2s;}
+  .fl a:hover{color:var(--gold);}
+  .fbot{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
+  .fbot span{font-size:.77rem;color:rgba(255,255,255,.38);}
+
+  /* ─── REVEAL ─── */
+  .rv{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+  .rv.vi{opacity:1;transform:translateY(0);}
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+  .d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width:900px){
+    .nav-links{display:none;}.hbg{display:flex;}
+    .why-grid{grid-template-columns:1fr;gap:2.5rem;}.why-vis{order:-1;}
+    .cwrap{grid-template-columns:1fr;gap:2rem;}
+    .fi{grid-template-columns:1fr 1fr;}
+    .hstats{position:relative;border-top:none;padding:1.5rem 0;}
+  }
+  @media(max-width:600px){
+    section{padding:70px 5vw;}
+    .hcontent{padding:98px 5vw 60px;}
+    .svc-grid{grid-template-columns:1fr;}
+    .fi{grid-template-columns:1fr;gap:2rem;}
+    .fbot{flex-direction:column;text-align:center;}
+    .frow{grid-template-columns:1fr;}
+    .orb{width:246px;height:246px;}.oc{width:168px;height:168px;}.ol{width:118px;}
+    .hstats{flex-wrap:wrap;justify-content:center;}
+    .st{flex:0 0 45%;border-right:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <!-- Logo SVG (nav) -->
+    <svg class="nlsvg" viewBox="0 0 220 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="40" r="4"   fill="#e8b84b"/>
+      <circle cx="18" cy="55" r="3"   fill="#e07c2a"/>
+      <circle cx="18" cy="68" r="2.5" fill="#4a9e5c"/>
+      <line x1="18" y1="40" x2="38" y2="40" stroke="#e8b84b" stroke-width="1.8"/>
+      <line x1="18" y1="55" x2="38" y2="55" stroke="#e07c2a" stroke-width="1.4"/>
+      <line x1="18" y1="68" x2="38" y2="68" stroke="#4a9e5c" stroke-width="1.4"/>
+      <text x="35"  y="80" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="url(#n1S)">S</text>
+      <text x="83"  y="80" font-family="Arial Black,sans-serif" font-weight="900" font-size="42" fill="#fff" font-style="italic">i</text>
+      <text x="97"  y="80" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="url(#n1A)">A</text>
+      <path d="M28 88 Q88 108 190 76" stroke="#1a2e4a" stroke-width="6"   fill="none" stroke-linecap="round"/>
+      <path d="M44 94 Q92 116 192 83" stroke="#e8b84b" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="n1S" x1="35" y1="22" x2="35" y2="80" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1e4d7b"/><stop offset="100%" stop-color="#2e7db5"/></linearGradient>
+        <linearGradient id="n1A" x1="97" y1="22" x2="155" y2="80" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4a9e5c"/><stop offset="100%" stop-color="#3d8a4f"/></linearGradient>
+      </defs>
+    </svg>
+    <div class="nltxt"><em>SIA</em> INTEGRAL<small>Sistemas · Ingeniería · Redes · Automatización</small></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="#contacto" class="ncta">Cotizar</a></li>
+  </ul>
+  <div class="hbg" id="hbg"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mmenu" id="mmenu">
+  <a href="#servicios" onclick="cm()">Servicios</a>
+  <a href="#nosotros"  onclick="cm()">Nosotros</a>
+  <a href="#contacto"  onclick="cm()">Contacto</a>
+  <a href="#contacto"  onclick="cm()" class="mm-cta">🚀 Cotizar ahora</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hbg-canvas">
+    <svg viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice">
+      <g stroke="rgba(46,125,181,0.5)" stroke-width="0.5">
+        <line x1="0" y1="100" x2="1400" y2="100"/><line x1="0" y1="200" x2="1400" y2="200"/>
+        <line x1="0" y1="300" x2="1400" y2="300"/><line x1="0" y1="400" x2="1400" y2="400"/>
+        <line x1="0" y1="500" x2="1400" y2="500"/><line x1="0" y1="600" x2="1400" y2="600"/>
+        <line x1="200" y1="0" x2="200" y2="800"/><line x1="400" y1="0" x2="400" y2="800"/>
+        <line x1="600" y1="0" x2="600" y2="800"/><line x1="800" y1="0" x2="800" y2="800"/>
+        <line x1="1000" y1="0" x2="1000" y2="800"/><line x1="1200" y1="0" x2="1200" y2="800"/>
+      </g>
+      <g fill="rgba(58,181,176,0.6)">
+        <circle cx="200" cy="200" r="4"/><circle cx="400" cy="300" r="3"/><circle cx="600" cy="100" r="4"/>
+        <circle cx="800" cy="400" r="3"/><circle cx="1000" cy="200" r="4"/><circle cx="1200" cy="500" r="3"/>
+        <circle cx="200" cy="500" r="3"/><circle cx="400" cy="600" r="4"/><circle cx="1000" cy="600" r="4"/>
+      </g>
+      <g stroke="rgba(232,184,75,0.4)" stroke-width="1.5" fill="none">
+        <path d="M200 200 L400 200 L400 300"/><path d="M600 100 L600 200 L800 200 L800 400"/>
+        <path d="M1000 200 L1200 200 L1200 500"/><path d="M200 500 L400 500 L400 600"/>
+        <path d="M600 400 L800 400 L800 600 L1000 600"/>
+      </g>
+    </svg>
+  </div>
+  <div class="hswoosh">
+    <svg viewBox="0 0 1400 900" preserveAspectRatio="xMaxYMin slice" fill="none">
+      <path d="M700 -50 Q1100 200 1450 100 L1450 0 Z" fill="rgba(30,77,123,0.18)"/>
+      <path d="M800 -50 Q1150 180 1450 150 L1450 0 Z" fill="rgba(58,181,176,0.1)"/>
+      <path d="M900 0  Q1200 220 1450 200 L1450 0 Z" fill="rgba(232,184,75,0.07)"/>
+      <path d="M-50 780 Q200 600 500 680 Q800 760 1000 600 L1400 900 L-50 900 Z" fill="rgba(30,77,123,0.12)"/>
+      <path d="M-50 820 Q250 660 550 730 Q850 800 1050 650 L1400 900 L-50 900 Z" fill="rgba(58,181,176,0.07)"/>
+    </svg>
+  </div>
+
+  <div class="hcontent">
+    <div class="hlogo-row">
+      <!-- Hero logo SVG -->
+      <svg class="hlogo-svg" viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="55" r="5.5" fill="#e8b84b"/><circle cx="22" cy="73" r="4" fill="#e07c2a"/><circle cx="22" cy="88" r="3" fill="#4a9e5c"/>
+        <line x1="22" y1="55" x2="48" y2="55" stroke="#e8b84b" stroke-width="2.2"/>
+        <line x1="22" y1="73" x2="48" y2="73" stroke="#e07c2a" stroke-width="1.8"/>
+        <line x1="22" y1="88" x2="48" y2="88" stroke="#4a9e5c" stroke-width="1.8"/>
+        <text x="44"  y="108" font-family="Arial Black,sans-serif" font-weight="900" font-size="80" fill="url(#h1S)">S</text>
+        <text x="107" y="108" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="#fff" font-style="italic">i</text>
+        <text x="126" y="108" font-family="Arial Black,sans-serif" font-weight="900" font-size="80" fill="url(#h1A)">A</text>
+        <path d="M40 118 Q120 148 242 106" stroke="#1a2e4a" stroke-width="8"   fill="none" stroke-linecap="round"/>
+        <path d="M60 126 Q124 158 243 114" stroke="#e8b84b" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="h1S" x1="44" y1="28" x2="44" y2="108" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1e4d7b"/><stop offset="100%" stop-color="#2e7db5"/></linearGradient>
+          <linearGradient id="h1A" x1="126" y1="28" x2="210" y2="108" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4a9e5c"/><stop offset="100%" stop-color="#3d8a4f"/></linearGradient>
+        </defs>
+      </svg>
+      <div class="hlogo-info">
+        <div class="brand"><em>SIA</em> INTEGRAL</div>
+        <div class="tag">Sistemas · Ingeniería · Administración · Redes · Automatización</div>
+      </div>
+    </div>
+
+    <h1 class="htitle">Tecnología que<br><span class="g">impulsa</span> tu negocio</h1>
+    <p class="hsub">Soluciones tecnológicas integrales para empresas que quieren crecer: software, redes, automatización y seguridad en un solo socio confiable.</p>
+    <div class="hpills">
+      <span class="hp">🖥️ Software</span><span class="hp">🔧 Ingeniería</span>
+      <span class="hp">🌐 Redes</span><span class="hp">⚙️ Automatización</span>
+      <span class="hp">📷 Cámaras IP</span><span class="hp">🛡️ Ciberseguridad</span>
+    </div>
+    <div class="hbtns">
+      <a href="#servicios" class="bp">Ver servicios</a>
+      <a href="#contacto"  class="bs">Contáctanos</a>
+    </div>
+  </div>
+
+  <div class="hstats">
+    <div class="st"><div class="stn">+200</div><div class="stl">Proyectos<br>completados</div></div>
+    <div class="st"><div class="stn">+4</div><div class="stl">Años de<br>experiencia</div></div>
+    <div class="st"><div class="stn">99%</div><div class="stl">Clientes<br>satisfechos</div></div>
+    <div class="st"><div class="stn">24/7</div><div class="stl">Soporte<br>técnico</div></div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══ -->
+<section id="servicios">
+  <div class="svc-head rv">
+    <span class="stag">Lo que ofrecemos</span>
+    <h2 class="stitle">Nuestros <span>Servicios</span></h2>
+    <p class="sdesc">Brindamos soluciones tecnológicas completas adaptadas a las necesidades de tu empresa, con equipos especializados y tecnología de punta.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="sc rv d1" data-c="blue">
+      <div class="si">🖥️</div><h3 class="st2">Desarrollo de Software</h3>
+      <p class="sd">Creamos aplicaciones web y móviles a medida que optimizan tus procesos y aumentan la productividad.</p>
+      <ul class="sl"><li>Aplicaciones web y móviles</li><li>Sistemas ERP / gestión empresarial</li><li>Integración de APIs y plataformas</li><li>Mantenimiento y soporte técnico</li></ul>
+    </div>
+    <div class="sc rv d2" data-c="green">
+      <div class="si">🔧</div><h3 class="st2">Ingeniería y Sistemas</h3>
+      <p class="sd">Diseñamos e implementamos infraestructuras TI robustas y escalables para garantizar tu continuidad operativa.</p>
+      <ul class="sl"><li>Diseño de infraestructura TI</li><li>Servidores y centros de datos</li><li>Consultoría y auditoría tecnológica</li><li>Virtualización y cloud</li></ul>
+    </div>
+    <div class="sc rv d3" data-c="navy">
+      <div class="si">🌐</div><h3 class="st2">Redes y Conectividad</h3>
+      <p class="sd">Instalamos y configuramos redes corporativas seguras y confiables para mantener tu empresa siempre conectada.</p>
+      <ul class="sl"><li>Redes LAN / WAN / WiFi empresarial</li><li>Cableado estructurado Cat 6A</li><li>VPN y acceso remoto seguro</li><li>Monitoreo continuo 24/7</li></ul>
+    </div>
+    <div class="sc rv d1" data-c="gold">
+      <div class="si">⚙️</div><h3 class="st2">Automatización Industrial</h3>
+      <p class="sd">Implementamos sistemas de control que optimizan tus procesos industriales y reducen costos operativos.</p>
+      <ul class="sl"><li>PLC y SCADA</li><li>IoT industrial e integración</li><li>Control de accesos automático</li><li>Sensores y actuadores</li></ul>
+    </div>
+    <div class="sc rv d2" data-c="teal">
+      <div class="si">📷</div><h3 class="st2">Videovigilancia IP</h3>
+      <p class="sd">Instalamos sistemas de cámaras IP de alta definición con monitoreo remoto para proteger tu empresa las 24 horas.</p>
+      <ul class="sl"><li>Cámaras IP 4K con visión nocturna</li><li>NVR y almacenamiento en nube</li><li>Acceso remoto desde tu celular</li><li>Detección inteligente por IA</li></ul>
+    </div>
+    <div class="sc rv d3" data-c="orange">
+      <div class="si">🛡️</div><h3 class="st2">Ciberseguridad</h3>
+      <p class="sd">Protegemos tu infraestructura digital con soluciones avanzadas contra amenazas y ataques cibernéticos.</p>
+      <ul class="sl"><li>Firewall y protección perimetral</li><li>Análisis de vulnerabilidades</li><li>Backup y recuperación de datos</li><li>Capacitación al personal</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ WHY ══ -->
+<section id="nosotros">
+  <div class="why-grid">
+    <div class="why-txt rv">
+      <span class="stag">¿Por qué elegirnos?</span>
+      <h2 class="stitle">Tu socio <span>tecnológico</span> de confianza</h2>
+      <p class="sdesc">Somos un equipo apasionado por la tecnología con más de 10 años de experiencia entregando soluciones integrales en toda la región.</p>
+      <div class="wi-wrap">
+        <div class="wi"><div class="wi-i">🏆</div><div><div class="wi-t">Experiencia comprobada</div><div class="wi-d">Más de 200 proyectos exitosos en diferentes sectores empresariales e industriales.</div></div></div>
+        <div class="wi"><div class="wi-i">⚡</div><div><div class="wi-t">Respuesta rápida</div><div class="wi-d">Soporte técnico ágil disponible para resolver cualquier incidencia en el menor tiempo posible.</div></div></div>
+        <div class="wi"><div class="wi-i">🎯</div><div><div class="wi-t">Soluciones a medida</div><div class="wi-d">Analizamos tu negocio y diseñamos soluciones que se adaptan perfectamente a tus necesidades.</div></div></div>
+        <div class="wi"><div class="wi-i">🤝</div><div><div class="wi-t">Acompañamiento continuo</div><div class="wi-d">No solo implementamos: te acompañamos con soporte, capacitación y evolución tecnológica.</div></div></div>
+      </div>
+    </div>
+    <div class="why-vis rv d2">
+      <div class="orb">
+        <div class="or1"><div class="od1"></div><div class="od2"></div></div>
+        <div class="or2"></div>
+        <div class="oc">
+          <!-- Logo en orb -->
+          <svg class="ol" viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="22" cy="55" r="5.5" fill="#e8b84b"/><circle cx="22" cy="73" r="4" fill="#e07c2a"/><circle cx="22" cy="88" r="3" fill="#4a9e5c"/>
+            <line x1="22" y1="55" x2="48" y2="55" stroke="#e8b84b" stroke-width="2.2"/>
+            <line x1="22" y1="73" x2="48" y2="73" stroke="#e07c2a" stroke-width="1.8"/>
+            <line x1="22" y1="88" x2="48" y2="88" stroke="#4a9e5c" stroke-width="1.8"/>
+            <text x="44"  y="108" font-family="Arial Black,sans-serif" font-weight="900" font-size="80" fill="url(#o2S)">S</text>
+            <text x="107" y="108" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="#fff" font-style="italic">i</text>
+            <text x="126" y="108" font-family="Arial Black,sans-serif" font-weight="900" font-size="80" fill="url(#o2A)">A</text>
+            <path d="M40 118 Q120 148 242 106" stroke="#1a2e4a" stroke-width="8"   fill="none" stroke-linecap="round"/>
+            <path d="M60 126 Q124 158 243 114" stroke="#e8b84b" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="o2S" x1="44" y1="28" x2="44" y2="108" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1e4d7b"/><stop offset="100%" stop-color="#2e7db5"/></linearGradient>
+              <linearGradient id="o2A" x1="126" y1="28" x2="210" y2="108" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4a9e5c"/><stop offset="100%" stop-color="#3d8a4f"/></linearGradient>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contacto">
+  <div class="cwrap">
+    <div class="rv">
+      <span class="stag">Hablemos</span>
+      <h2 class="stitle">¿Listo para <span>empezar</span>?</h2>
+      <p class="sdesc">Cuéntanos tu proyecto. Nuestro equipo te responderá en menos de 24 horas con una propuesta personalizada sin costo.</p>
+      <div class="ci-list">
+        <div class="ci"><div class="ci-ico">🌐</div><div><div class="ci-lbl">Sitio web</div><div class="ci-val">www.siaintegral.com</div></div></div>
+        <div class="ci"><div class="ci-ico">✉️</div><div><div class="ci-lbl">Correo electrónico</div><div class="ci-val"><a href="mailto:contacto@siaintegral.com">contacto@siaintegral.com</a></div></div></div>
+        <div class="ci">
+          <div class="ci-ico">📞</div>
+          <div>
+            <div class="ci-lbl">Teléfonos de contacto</div>
+            <div class="ci-val">
+              <a href="tel:+59173065200">73 065 200</a> &nbsp;·&nbsp;
+              <a href="tel:+59175222568">75 222 568</a> &nbsp;·&nbsp;
+              <a href="tel:+59169755461">69 755 461</a>
+            </div>
+          </div>
+        </div>
+        <div class="ci"><div class="ci-ico">💬</div><div><div class="ci-lbl">WhatsApp</div><div class="ci-val"><a href="https://wa.me/59173065200" target="_blank">73 065 200 – Escríbenos ahora</a></div></div></div>
+      </div>
+    </div>
+
+    <div class="cform rv d2">
+      <div class="ft">📋 Solicitar cotización</div>
+      <div class="frow">
+        <div class="fg"><label>Nombre *</label><input type="text" id="fn" placeholder="Tu nombre completo"></div>
+        <div class="fg"><label>Empresa</label><input type="text" id="fc" placeholder="Nombre de tu empresa"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Correo electrónico *</label><input type="email" id="fe" placeholder="correo@empresa.com"></div>
+        <div class="fg"><label>Teléfono</label><input type="tel" id="ftel" placeholder="Ej. 73065200"></div>
+      </div>
+      <div class="fg">
+        <label>Servicio de interés</label>
+        <select id="fs">
+          <option value="">— Selecciona un servicio —</option>
+          <option>Desarrollo de Software</option>
+          <option>Ingeniería y Sistemas</option>
+          <option>Redes y Conectividad</option>
+          <option>Automatización Industrial</option>
+          <option>Videovigilancia IP / Cámaras de seguridad</option>
+          <option>Ciberseguridad</option>
+          <option>Varios servicios</option>
+        </select>
+      </div>
+      <div class="fg"><label>Mensaje *</label><textarea id="fm" placeholder="Cuéntanos sobre tu proyecto o necesidad…"></textarea></div>
+      <button class="fsub" onclick="enviar()">🚀 Enviar solicitud</button>
+      <p class="fnote">Tu mensaje se enviará directamente a <a href="mailto:contacto@siaintegral.com">contacto@siaintegral.com</a><br>Te responderemos en menos de 24 horas hábiles.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="fi">
+    <div>
+      <div class="fbrow">
+        <svg class="fbsvg" viewBox="0 0 220 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="40" r="4" fill="#e8b84b"/><circle cx="18" cy="55" r="3" fill="#e07c2a"/><circle cx="18" cy="68" r="2.5" fill="#4a9e5c"/>
+          <line x1="18" y1="40" x2="38" y2="40" stroke="#e8b84b" stroke-width="1.8"/>
+          <line x1="18" y1="55" x2="38" y2="55" stroke="#e07c2a" stroke-width="1.4"/>
+          <line x1="18" y1="68" x2="38" y2="68" stroke="#4a9e5c" stroke-width="1.4"/>
+          <text x="35"  y="80" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="url(#f1S)">S</text>
+          <text x="83"  y="80" font-family="Arial Black,sans-serif" font-weight="900" font-size="42" fill="#fff" font-style="italic">i</text>
+          <text x="97"  y="80" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="url(#f1A)">A</text>
+          <path d="M28 88 Q88 108 190 76" stroke="#1a2e4a" stroke-width="6"   fill="none" stroke-linecap="round"/>
+          <path d="M44 94 Q92 116 192 83" stroke="#e8b84b" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <defs>
+            <linearGradient id="f1S" x1="35" y1="22" x2="35" y2="80" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1e4d7b"/><stop offset="100%" stop-color="#2e7db5"/></linearGradient>
+            <linearGradient id="f1A" x1="97" y1="22" x2="155" y2="80" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4a9e5c"/><stop offset="100%" stop-color="#3d8a4f"/></linearGradient>
+          </defs>
+        </svg>
+        <div class="fbn"><em>SIA</em> INTEGRAL<small>Sistemas · Ingeniería · Administración · Redes · Automatización</small></div>
+      </div>
+      <p class="fdesc">Tu socio tecnológico integral para el crecimiento y la transformación digital de tu empresa.</p>
+      <div class="fsoc">
+        <a href="#" title="Facebook">f</a>
+        <a href="https://wa.me/59173065200" target="_blank" title="WhatsApp">W</a>
+        <a href="#" title="LinkedIn">in</a>
+        <a href="#" title="Instagram">ig</a>
+      </div>
+    </div>
+    <div>
+      <div class="fch">Servicios</div>
+      <ul class="fl">
+        <li><a href="#servicios">Desarrollo de Software</a></li>
+        <li><a href="#servicios">Ingeniería y Sistemas</a></li>
+        <li><a href="#servicios">Redes y Conectividad</a></li>
+        <li><a href="#servicios">Automatización</a></li>
+        <li><a href="#servicios">Videovigilancia IP</a></li>
+        <li><a href="#servicios">Ciberseguridad</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="fch">Contacto</div>
+      <ul class="fl">
+        <li><a href="mailto:contacto@siaintegral.com">siaintegral.bo@gmail.com</a></li>
+        <li><a href="tel:+59173065200">📞 73 065 200</a></li>
+        <li><a href="tel:+59175222568">📞 75 222 568</a></li>
+        <li><a href="tel:+59169755461">📞 69 755 461</a></li>
+        <li><a href="https://wa.me/59173065200" target="_blank">💬 WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fbot">
+    <span>© 2025 SIA Integral. Todos los derechos reservados.</span>
+    <span>Diseñado con ❤️ para impulsar tu empresa</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast">✅ ¡Solicitud enviada! Te contactaremos pronto.</div>
+
+<script>
+  // hamburger
+  const hbgEl = document.getElementById('hbg');
+  const mmEl  = document.getElementById('mmenu');
+  hbgEl.addEventListener('click', () => { hbgEl.classList.toggle('on'); mmEl.classList.toggle('on'); });
+  function cm(){ hbgEl.classList.remove('on'); mmEl.classList.remove('on'); }
+
+  // scroll reveal
+  const ro = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('vi'); }), {threshold:.1});
+  document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+
+  // form → mailto
+  function enviar(){
+    const name = document.getElementById('fn').value.trim();
+    const email= document.getElementById('fe').value.trim();
+    const msg  = document.getElementById('fm').value.trim();
+    if(!name || !email || !msg){
+      alert('Por favor completa los campos obligatorios: Nombre, Correo y Mensaje.');
+      return;
+    }
+    const co  = document.getElementById('fc').value.trim();
+    const tel = document.getElementById('ftel').value.trim();
+    const srv = document.getElementById('fs').value;
+    const subj= encodeURIComponent('Solicitud de cotización – SIA Integral');
+    const body= encodeURIComponent(
+      `Nombre: ${name}\nEmpresa: ${co||'—'}\nCorreo: ${email}\nTeléfono: ${tel||'—'}\nServicio: ${srv||'—'}\n\nMensaje:\n${msg}\n\n---\nEnviado desde el sitio web de SIA Integral`
+    );
+    window.location.href = `mailto:contacto@siaintegral.com?subject=${subj}&body=${body}`;
+    const t = document.getElementById('toast');
+    t.style.display='block';
+    setTimeout(()=>{ t.style.display='none'; }, 5000);
+  }
+</script>
+</body>
+</html>
